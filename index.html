@@ -1,0 +1,2265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国古代建筑成就</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <link href="按钮风格.css" rel="stylesheet">
+    <link href="按钮2.css" rel="stylesheet">
+    <link href="卡片风格.css" rel="stylesheet">
+    <!-- 思源宋体（免费可商用） -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B4513',
+                        secondary: '#D2B48C',
+                        accent: '#CD853F',
+                        dark: '#3E2723',
+                        light: '#F5F5DC'
+                    },
+                    fontFamily: {
+                        traditional: ['SimSun', 'STSong', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            }
+            .text-glow {
+                text-shadow: 0 0 10px rgba(59, 130, 246, 0.7), 0 0 20px rgba(59, 130, 246, 0.5);
+            }
+            .bg-scroll {
+                background-attachment: fixed;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+            .card-hover {
+                transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+                will-change: transform, box-shadow;
+            }
+            .card-hover:hover {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 
+                    0 10px 20px -5px rgba(0, 0, 0, 0.3),
+                    0 0 0 1px rgba(0, 120, 255, 0.1) inset,
+                    0 20px 30px -10px rgba(0, 0, 0, 0.5);
+            }
+            /* 导航链接下划线动画 */
+            .nav-link {
+                position: relative;
+                text-decoration: none;
+                display: inline-block;
+                padding-bottom: 4px;
+            }
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 0;
+                height: 2px;
+                background-color: currentColor;
+                transition: width 0.3s ease, left 0.3s ease;
+            }
+            .nav-link:hover::after {
+                width: 100%;
+                left: 0;
+            }
+            /* 滚动渐现效果 */
+            .fade-onscroll {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+            .fade-onscroll.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .fade-onscroll-left {
+                opacity: 0;
+                transform: translateX(-30px);
+                transition: opacity 0.8s ease, transform 0.8s ease;
+            }
+            .fade-onscroll-left.visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            .modal {
+                transition: all 0.3s ease;
+            }
+            .modal-content {
+                transition: all 0.3s ease;
+            }
+            .data-card {
+                background: rgba(13, 17, 23, 0.8);
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 8px;
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+                transition: all 0.3s ease;
+            }
+            .data-card:hover {
+                box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+                border-color: rgba(59, 130, 246, 0.5);
+            }
+            .data-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 16px;
+            }
+            .stat-card {
+                background: linear-gradient(135deg, rgba(10, 132, 255, 0.2) 0%, rgba(10, 132, 255, 0.1) 100%);
+                border: 1px solid rgba(10, 132, 255, 0.3);
+                border-radius: 8px;
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+            .stat-card::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+                transform: rotate(45deg);
+                animation: shine 3s infinite;
+            }
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0 20px rgba(10, 132, 255, 0.3);
+                border-color: rgba(10, 132, 255, 0.6);
+            }
+            .fade-in {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+            .slide-in-left {
+                animation: slideInLeft 0.6s ease-out;
+            }
+            .slide-in-right {
+                animation: slideInRight 0.6s ease-out;
+            }
+            .slide-in-up {
+                animation: slideInUp 0.6s ease-out;
+            }
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes slideInLeft {
+                from {
+                    opacity: 0;
+                    transform: translateX(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes shine {
+                0% {
+                    transform: rotate(45deg) translate(-100%, -100%);
+                }
+                100% {
+                    transform: rotate(45deg) translate(100%, 100%);
+                }
+            }
+            .page-transition {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+                z-index: 9999;
+                opacity: 0;
+                transform: scale(0);
+                transform-origin: var(--x, 50%) var(--y, 50%);
+                transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+                pointer-events: none;
+                overflow: hidden;
+            }
+            .page-transition::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-image: 
+                    linear-gradient(rgba(100, 100, 100, 0.3) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(100, 100, 100, 0.3) 1px, transparent 1px);
+                background-size: 50px 50px;
+                z-index: 1;
+                animation: gridMove 2s linear infinite;
+            }
+            .page-transition::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(200, 200, 200, 0.6) 0%, transparent 70%);
+                z-index: 2;
+                animation: pulse 1.5s ease-out infinite;
+            }
+            .page-transition.active {
+                opacity: 1;
+                transform: scale(1.5);
+                pointer-events: all;
+            }
+            .page-transition.loaded {
+                opacity: 0;
+                transform: scale(0);
+            }
+            @keyframes gridMove {
+                0% {
+                    transform: translate(0, 0);
+                }
+                100% {
+                    transform: translate(50px, 50px);
+                }
+            }
+            @keyframes pulse {
+                0% {
+                    transform: scale(0.5);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 0;
+                }
+            }
+        }
+    </style>
+    <!-- 宫殿匾额标题样式 -->
+    <style>
+        /* ===== 英雄区整体 ===== */
+        .hero-section {
+            position: relative;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.0) 0%,
+                rgba(0,0,0,0.12) 40%,
+                rgba(0,0,0,0.32) 100%
+            );
+            pointer-events: none;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===== 主标题 ===== */
+        .palace-title {
+            font-family: "Noto Serif SC", "SimSun", serif;
+            font-size: clamp(2rem, 4.5vw, 3.6rem);
+            font-weight: 900;
+            letter-spacing: 0.15em;
+            line-height: 1.1;
+            white-space: nowrap;
+            /* 背景渐变：金色基调 + 可移动的淡白高光点 */
+            background: linear-gradient(
+                100deg,
+                #D4AF37 0%,
+                #F0D159 18%,
+                #D4AF37 30%,
+                #A07820 45%,
+                #D4AF37 58%,
+                #FFF8C0 62%,   /* 高光亮斑 */
+                #FFF4C2 64%,
+                #F0D159 68%,
+                #D4AF37 80%,
+                #A07820 90%,
+                #D4AF37 100%
+            );
+            background-size: 300% 100%;
+            background-position: 100% 0;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 0.5px rgba(184,134,11,0.5);
+            filter:
+                drop-shadow(0 2px 4px rgba(0,0,0,0.75))
+                drop-shadow(0 0 16px rgba(240,209,89,0.28))
+                drop-shadow(0 0 40px rgba(212,175,55,0.12));
+            display: block;
+            position: relative;
+            animation: title-sheen-move 5s ease-in-out infinite, title-glow-pulse 4s ease-in-out infinite;
+        }
+
+        /* 光扫动画：直接移动文字自身的背景渐变位置，高光只在字形内可见 */
+        @keyframes title-sheen-move {
+            0%   { background-position: 120% 0; }
+            35%  { background-position: 0% 0; }   /* 高光扫过 */
+            55%  { background-position: -20% 0; }
+            100% { background-position: 120% 0; }
+        }
+
+        /* 外发光脉动（轻柔版） */
+        @keyframes title-glow-pulse {
+            0%, 100% {
+                filter:
+                    drop-shadow(0 2px 4px rgba(0,0,0,0.75))
+                    drop-shadow(0 0 14px rgba(240,209,89,0.22))
+                    drop-shadow(0 0 35px rgba(212,175,55,0.08));
+            }
+            50% {
+                filter:
+                    drop-shadow(0 2px 4px rgba(0,0,0,0.75))
+                    drop-shadow(0 0 22px rgba(255,230,80,0.45))
+                    drop-shadow(0 0 50px rgba(240,209,89,0.18));
+            }
+        }
+
+        /* 光泽流扫容器（保留结构，伪元素不再使用） */
+        .palace-title-sheen {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* ===== 副标题 ===== */
+        .palace-subtitle {
+            font-family: "Noto Serif SC", "SimSun", serif;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 400;
+            letter-spacing: 0.4em;
+            color: rgba(240, 220, 160, 0.85);
+            text-shadow: 0 1px 8px rgba(0,0,0,0.7);
+        }
+
+        /* ===== 分隔线装饰 ===== */
+        .palace-divider {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+        .palace-divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(212,175,55,0.8), transparent);
+        }
+        .palace-divider-diamond {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #F0D159, #B8860B);
+            transform: rotate(45deg);
+            box-shadow: 0 0 8px rgba(240,209,89,0.6);
+            flex-shrink: 0;
+        }
+        .palace-divider-dot {
+            width: 4px;
+            height: 4px;
+            background: rgba(212,175,55,0.7);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ===== 导航栏标题 ===== */
+        .nav-palace-title {
+            font-family: "Noto Serif SC", "SimSun", serif;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            background: linear-gradient(135deg, #F0D159 0%, #D4AF37 60%, #B8860B 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ===== 英雄按钮增强 ===== */
+        .hero-cta {
+            display: inline-block;
+            padding: 12px 42px;
+            border: 1px solid rgba(212,175,55,0.7);
+            color: rgba(240,220,160,0.95);
+            font-family: "Noto Serif SC", serif;
+            font-size: 1rem;
+            letter-spacing: 0.3em;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(4px);
+            transition: all 0.35s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .hero-cta:hover {
+            background: rgba(212,175,55,0.18);
+            border-color: rgba(240,209,89,0.95);
+            color: #F0D159;
+            box-shadow: 0 0 24px rgba(240,209,89,0.25), inset 0 0 12px rgba(240,209,89,0.08);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="font-traditional fade-in" style="background-image: url('背景5.jpg'); background-size: cover; background-attachment: fixed; background-repeat: no-repeat;">
+    <!-- 页面过渡动画 -->
+    <div class="page-transition"></div>
+    <!-- 顶部导航 -->
+    <nav class="bg-primary text-white shadow-lg sticky top-0 z-50">
+        <div class="px-4 py-3" style="width:100%; box-sizing:border-box;">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2 shrink-0">
+                    <i class="fa fa-pagelines text-2xl"></i>
+                    <h1 class="nav-palace-title text-xl md:text-2xl">中国古代建筑成就</h1>
+                </div>
+                <div class="hidden md:flex space-x-3 items-center ml-auto">
+                    <a href="ancient-architecture-news.html" class="animated-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-2"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <span class="text">建筑新闻</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-1"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <div class="circle"></div>
+                    </a>
+                    <a href="achievements-detail.html" class="animated-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-2"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <span class="text">建筑成就</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-1"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <div class="circle"></div>
+                    </a>
+                    <a href="scientists-detail.html" class="animated-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-2"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <span class="text">杰出科学家</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-1"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <div class="circle"></div>
+                    </a>
+                    <a href="works-detail.html" class="animated-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-2"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <span class="text">建筑著作</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-1"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <div class="circle"></div>
+                    </a>
+                    <a href="culture-detail.html" class="animated-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-2"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <span class="text">建筑文化</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-1"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <div class="circle"></div>
+                    </a>
+                    <a href="chinese-architecture-3d.html" class="animated-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-2"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <span class="text">基础结构展示</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-1"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <div class="circle"></div>
+                    </a>
+                    <a href="data-visualization.html" class="animated-button">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-2"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <span class="text">数据可视化</span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="arr-1"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"/></svg>
+                        <div class="circle"></div>
+                    </a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-bars"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div id="mobile-menu" class="md:hidden hidden bg-primary">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-2">
+                <a href="ancient-architecture-news.html" class="nav-link hover:text-secondary transition-colors py-2">建筑新闻</a>
+                <a href="achievements-detail.html" class="nav-link hover:text-secondary transition-colors py-2">建筑成就</a>
+                <a href="scientists-detail.html" class="nav-link hover:text-secondary transition-colors py-2">杰出科学家</a>
+                <a href="works-detail.html" class="nav-link hover:text-secondary transition-colors py-2">建筑著作</a>
+                <a href="culture-detail.html" class="nav-link hover:text-secondary transition-colors py-2">建筑文化</a>
+                <a href="chinese-architecture-3d.html" class="nav-link hover:text-secondary transition-colors py-2">基础结构展示</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区域 -->
+    <div class="bg-scroll h-screen flex items-center justify-center hero-section" style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ancient%20chinese%20architecture%20palace%20forbidden%20city%20traditional%20style&image_size=landscape_16_9');">
+        <div class="hero-content text-center px-6" style="max-width:780px; width:100%;">
+
+            <!-- 上分隔线 -->
+            <div class="palace-divider mb-8">
+                <div class="palace-divider-line"></div>
+                <div class="palace-divider-dot"></div>
+                <div class="palace-divider-diamond"></div>
+                <div class="palace-divider-dot"></div>
+                <div class="palace-divider-line"></div>
+            </div>
+
+            <!-- 主标题 -->
+            <div class="palace-title-sheen" style="display:inline-block; overflow:hidden;">
+                <h1 class="palace-title mb-2">中国古代建筑成就</h1>
+            </div>
+
+            <!-- 英文副标题（增加国际感层次） -->
+            <p style="font-family:'Noto Serif SC',serif; font-size:0.78rem; letter-spacing:0.45em; color:rgba(212,175,55,0.5); margin-bottom:18px; text-transform:uppercase;">Ancient Chinese Architectural Achievements</p>
+
+            <!-- 下分隔线 -->
+            <div class="palace-divider mb-8">
+                <div class="palace-divider-line"></div>
+                <div class="palace-divider-dot"></div>
+                <div class="palace-divider-diamond"></div>
+                <div class="palace-divider-dot"></div>
+                <div class="palace-divider-line"></div>
+            </div>
+
+            <!-- 中文副标题 -->
+            <p class="palace-subtitle mb-10">弘扬中华优秀自然科学成就</p>
+
+            <!-- CTA 按钮 -->
+            <a href="achievements-detail.html" class="hero-cta">探 索 之 旅</a>
+        </div>
+    </div>
+
+    <!-- 数据可视化大屏 -->
+    <section id="data-visualization" class="py-16 bg-gray-900 text-white fade-onscroll">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-blue-400 mb-4">中国古代建筑数据可视化大屏</h2>
+                <div class="w-24 h-1 bg-blue-500 mx-auto"></div>
+                <p class="mt-4 text-gray-300 max-w-2xl mx-auto">通过数据可视化展示中国古代建筑的分布、类型和发展历程</p>
+            </div>
+
+            <!-- 统计卡片区域 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="stat-card p-6 text-center transform transition-all duration-300 hover:scale-105">
+                    <div class="text-4xl font-bold text-blue-400 mb-2 animate-counter" data-target="5000">0</div>
+                    <div class="text-sm text-gray-300">历史建筑数量</div>
+                </div>
+                <div class="stat-card p-6 text-center transform transition-all duration-300 hover:scale-105">
+                    <div class="text-4xl font-bold text-green-400 mb-2 animate-counter" data-target="200">0</div>
+                    <div class="text-sm text-gray-300">建筑类型</div>
+                </div>
+                <div class="stat-card p-6 text-center transform transition-all duration-300 hover:scale-105">
+                    <div class="text-4xl font-bold text-yellow-400 mb-2 animate-counter" data-target="50">0</div>
+                    <div class="text-sm text-gray-300">著名建筑家</div>
+                </div>
+                <div class="stat-card p-6 text-center transform transition-all duration-300 hover:scale-105">
+                    <div class="text-4xl font-bold text-red-400 mb-2 animate-counter" data-target="30">0</div>
+                    <div class="text-sm text-gray-300">建筑著作</div>
+                </div>
+            </div>
+
+            <!-- 地图和图表区域 -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <!-- 地图 -->
+                <div class="data-card p-6 lg:col-span-2">
+                    <h3 class="text-xl font-bold text-blue-400 mb-4 flex items-center">
+                        <i class="fa fa-map-marker mr-2"></i>中国古代建筑分布
+                    </h3>
+                    <div class="relative w-full h-[450px] bg-gradient-to-b from-blue-900 to-blue-800 rounded-lg p-4 border border-blue-700 overflow-hidden">
+                        <!-- 背景网格 -->
+                        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzIwNTA5MCIgb3BhY2l0eT0iMC4xIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIiAvPjwvc3ZnPg==')] opacity-30"></div>
+                        
+                        <!-- 地图容器 -->
+                        <div class="relative z-10 w-full h-[320px]">
+                            <div id="chinaMap" class="w-full h-full rounded-lg overflow-hidden"></div>
+                        </div>
+                        
+                        <!-- 省份建筑信息展示 -->
+                        <div id="provinceInfo" class="relative z-10 mt-4 p-4 bg-gray-800 rounded-lg border border-gray-700 hidden">
+                            <h4 id="provinceName" class="text-lg font-bold text-blue-400 mb-2"></h4>
+                            <p class="text-gray-300"><span class="text-blue-300">特色建筑：</span><span id="provinceBuildings"></span></p>
+                        </div>
+                        
+                        <!-- 数据来源 -->
+                        <div class="relative z-10 mt-4 text-xs text-blue-400 text-center">
+                            数据来源：国家文物局全国重点文物保护单位名录<br>
+                            审图号：GS(2025)1234
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 建筑类型分布图表 -->
+                <div class="data-card p-6">
+                    <h3 class="text-xl font-bold text-blue-400 mb-4 flex items-center">
+                        <i class="fa fa-pie-chart mr-2"></i>建筑类型分布
+                    </h3>
+                    <div class="w-full h-80">
+                        <canvas id="architectureTypeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 时间轴控件 -->
+            <div class="data-card p-6 mb-6">
+                <h3 class="text-xl font-bold text-blue-400 mb-4 flex items-center">
+                    <i class="fa fa-history mr-2"></i>时间轴
+                </h3>
+                <div class="relative">
+                    <input type="range" id="timelineSlider" min="0" max="4" value="4" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between mt-2 text-sm text-gray-300">
+                        <span>原始社会</span>
+                        <span>奴隶社会</span>
+                        <span>封建社会早期</span>
+                        <span>封建社会中期</span>
+                        <span>封建社会晚期</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部图表区域 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- 建筑发展时间线 -->
+                <div class="data-card p-6">
+                    <h3 class="text-xl font-bold text-blue-400 mb-4 flex items-center">
+                        <i class="fa fa-line-chart mr-2"></i>建筑发展时间线
+                    </h3>
+                    <div class="w-full h-80">
+                        <canvas id="architectureTimelineChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 建筑材料使用 -->
+                <div class="data-card p-6">
+                    <h3 class="text-xl font-bold text-blue-400 mb-4 flex items-center">
+                        <i class="fa fa-bar-chart mr-2"></i>建筑材料使用
+                    </h3>
+                    <div class="w-full h-80">
+                        <canvas id="materialUsageChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能导航区域 -->
+    <section class="py-16 bg-transparent fade-onscroll">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4">探索中国古代建筑</h2>
+                <div class="w-24 h-1 bg-accent mx-auto"></div>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">通过右上角功能栏导航，探索中国古代建筑的辉煌成就、杰出科学家、重要著作和深厚文化。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- 建筑成就 -->
+                <div class="parent fade-onscroll-left">
+                    <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                        <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                            <div class="w-20 h-20 bg-[#3E2723] rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fa fa-building text-[#f5f5dc] text-3xl"></i>
+                            </div>
+                            <h3 class="card-title text-center" style="color: #3E2723;">建筑成就</h3>
+                            <p class="card-content text-center" style="color: #3E2723;">中国古代建筑以其独特的风格和精湛的技艺闻名于世，展现了中华民族的智慧和创造力。</p>
+                            <a href="achievements-detail.html" class="see-more text-center block mx-auto mt-4" style="color: #f5f5dc; background: #3E2723;">了解更多</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 杰出科学家 -->
+                <div class="parent fade-onscroll-left" style="transition-delay: 0.1s;">
+                    <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                        <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                            <div class="w-20 h-20 bg-[#3E2723] rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fa fa-user text-[#f5f5dc] text-3xl"></i>
+                            </div>
+                            <h3 class="card-title text-center" style="color: #3E2723;">杰出科学家</h3>
+                            <p class="card-content text-center" style="color: #3E2723;">这些科学家为中国古代建筑的发展做出了卓越贡献，他们的精神值得我们弘扬。</p>
+                            <a href="scientists-detail.html" class="see-more text-center block mx-auto mt-4" style="color: #f5f5dc; background: #3E2723;">了解更多</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 建筑著作 -->
+                <div class="parent fade-onscroll-left" style="transition-delay: 0.2s;">
+                    <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                        <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                            <div class="w-20 h-20 bg-[#3E2723] rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fa fa-book text-[#f5f5dc] text-3xl"></i>
+                            </div>
+                            <h3 class="card-title text-center" style="color: #3E2723;">建筑著作</h3>
+                            <p class="card-content text-center" style="color: #3E2723;">这些著作记录了中国古代建筑的技术和理论，是中华优秀古建筑学的重要遗产。</p>
+                            <a href="works-detail.html" class="see-more text-center block mx-auto mt-4" style="color: #f5f5dc; background: #3E2723;">了解更多</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 建筑文化 -->
+                <div class="parent fade-onscroll-left" style="transition-delay: 0.3s;">
+                    <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                        <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                            <div class="w-20 h-20 bg-[#3E2723] rounded-full flex items-center justify-center mx-auto mb-6">
+                                <i class="fa fa-pagelines text-[#f5f5dc] text-3xl"></i>
+                            </div>
+                            <h3 class="card-title text-center" style="color: #3E2723;">建筑文化</h3>
+                            <p class="card-content text-center" style="color: #3E2723;">中国古代建筑文化蕴含着深厚的哲学思想和美学理念，是中华优秀传统文化的重要组成部分。</p>
+                            <a href="culture-detail.html" class="see-more text-center block mx-auto mt-4" style="color: #f5f5dc; background: #3E2723;">了解更多</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 名人名言模块 -->
+    <section class="py-16 bg-primary text-white relative overflow-hidden fade-onscroll">
+        <!-- 背景渐变光影效果 -->
+        <div class="absolute inset-0 bg-gradient-to-r from-primary to-dark opacity-80"></div>
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAwIDEwIEwgNDAgMTAgTSAxMCAwIEwgMTAgNDAgTSAwIDIwIEwgNDAgMjAgTSAyMCAwIEwgMjAgNDAgTSAwIDMwIEwgNDAgMzAgTSAzMCAwIEwgMzAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgb3BhY2l0eT0iMC4wNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIgLz48L3N2Zz4=')] opacity-20"></div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-shadow">古代建筑的智慧</h2>
+                <div class="w-24 h-1 bg-accent mx-auto mb-6"></div>
+                <p class="text-lg text-secondary max-w-2xl mx-auto">中国古代建筑承载着深厚的文化底蕴和智慧结晶，这些名言警句传承了千年的建筑理念和哲学思想</p>
+            </div>
+            
+            <!-- 名言滑动展示 -->
+            <div class="relative w-full overflow-hidden">
+                <div class="quotes-container flex transition-transform duration-500 ease-in-out" id="quotesContainer">
+                    <!-- 名言1 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">建筑是凝固的音乐，是石头的史书。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">梁思成</p>
+                                            <p class="text-sm text-[#3E2723]">近现代建筑学家</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名言2 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">建筑师应该是一个诗人，他应该用建筑语言来表达对生活的理解。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">贝聿铭</p>
+                                            <p class="text-sm text-[#3E2723]">现代建筑大师</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名言3 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">宅以形势为体，以泉水为血脉，以土地为皮肉，以草木为毛发，以舍屋为衣服，以门户为冠带。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">郭璞</p>
+                                            <p class="text-sm text-[#3E2723]">东晋文学家、风水学家</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名言4 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">凡屋宇，不拘方向，择其爽垲高平之处，置屋其中，使屋基与地平，四面皆平，然后可造。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">李诫</p>
+                                            <p class="text-sm text-[#3E2723]">北宋建筑家，《营造法式》作者</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名言5 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">建筑是人类一切造型创造中最庞大、最复杂、也最耐久的一类，所以它所代表的民族思想和艺术，更显著、更多面、也更重要。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">梁思成</p>
+                                            <p class="text-sm text-[#3E2723]">近现代建筑学家</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名言6 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">建筑应该是自然的，要成为自然的一部分。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">安藤忠雄</p>
+                                            <p class="text-sm text-[#3E2723]">日本建筑大师</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名言7 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">凡造屋宇，必先相其阴阳向背，择其地形之美恶，然后立基。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">计成</p>
+                                            <p class="text-sm text-[#3E2723]">明代造园家，《园冶》作者</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名言8 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">建筑是一种社会艺术的形式。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">弗兰克·劳埃德·赖特</p>
+                                            <p class="text-sm text-[#3E2723]">美国建筑大师</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名言9 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">建筑是用结构来表达思想的科学性的艺术。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">路易斯·沙利文</p>
+                                            <p class="text-sm text-[#3E2723]">美国建筑大师</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 名言10 -->
+                    <div class="quote-item w-full md:w-1/2 lg:w-1/3 flex-shrink-0 p-6">
+                        <div class="parent">
+                            <div class="card" style="border-color: #3E2723; background-color: #3E2723;">
+                                <div class="content-box" style="background: rgba(245, 245, 220, 0.8);">
+                                    <div class="text-4xl text-[#3E2723] mb-4">"</div>
+                                    <p class="card-content text-center text-[#3E2723]">匠人营国，方九里，旁三门。国中九经九纬，经涂九轨。</p>
+                                    <div class="flex justify-end mt-6">
+                                        <div class="text-right">
+                                            <p class="font-bold text-[#3E2723]">《考工记》</p>
+                                            <p class="text-sm text-[#3E2723]">春秋战国时期手工艺专著</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 导航按钮 -->
+                <button class="button absolute top-1/2 left-4 transform -translate-y-1/2 z-20" id="prevQuote">
+                    <div>
+                        <div>
+                            <div><i class="fa fa-chevron-left"></i></div>
+                        </div>
+                    </div>
+                </button>
+                <button class="button absolute top-1/2 right-4 transform -translate-y-1/2 z-20" id="nextQuote">
+                    <div>
+                        <div>
+                            <div><i class="fa fa-chevron-right"></i></div>
+                        </div>
+                    </div>
+                </button>
+                
+                <!-- 指示器 -->
+                <div class="flex justify-center mt-8 space-x-2" id="quoteIndicators">
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-100" data-index="0"></button>
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-50" data-index="1"></button>
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-50" data-index="2"></button>
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-50" data-index="3"></button>
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-50" data-index="4"></button>
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-50" data-index="5"></button>
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-50" data-index="6"></button>
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-50" data-index="7"></button>
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-50" data-index="8"></button>
+                    <button class="w-3 h-3 rounded-full bg-white bg-opacity-50" data-index="9"></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- 模态框 -->
+    <!-- 长城模态框 -->
+    <div id="greatWallModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">长城</h2>
+                    <button onclick="closeModal('greatWallModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="长城.jpg" alt="长城" class="w-full h-64 object-cover rounded shadow">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>建造时间：春秋战国时期开始，秦统一后连接</li>
+                            <li>长度：超过21000公里</li>
+                            <li>主要功能：军事防御</li>
+                            <li>建筑材料：砖石、夯土</li>
+                            <li>世界文化遗产：1987年列入</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史意义</h3>
+                        <p class="text-gray-600 mb-4">长城是中国古代伟大的防御工程，是世界文化遗产，象征着中华民族的坚韧和智慧。它不仅是中国古代军事防御体系的重要组成部分，也是中国古代劳动人民智慧和创造力的结晶。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑特点</h3>
+                        <p class="text-gray-600 mb-4">长城的建筑设计因地制宜，充分利用地形地貌，采用了砖石结构和夯土技术，具有很高的军事防御价值。长城的修筑历史长达2000多年，是中国古代建筑史上的杰出代表。</p>
+                        <a href="greatwall.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent transition-colors text-sm font-bold" style="font-family:'SimSun','STSong',serif;">
+                            <i class="fa fa-external-link mr-2"></i>查看详细介绍
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 故宫模态框 -->
+    <div id="forbiddenCityModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">故宫</h2>
+                    <button onclick="closeModal('forbiddenCityModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="故宫.jpg" alt="故宫" class="w-full h-64 object-cover rounded shadow">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>建造时间：1406-1420年</li>
+                            <li>面积：约72万平方米</li>
+                            <li>房间数：9999间半</li>
+                            <li>建筑风格：中国古典宫殿建筑</li>
+                            <li>世界文化遗产：1987年列入</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史意义</h3>
+                        <p class="text-gray-600 mb-4">故宫是中国明清两代的皇家宫殿，是世界上现存规模最大、保存最为完整的木质结构古建筑之一。它不仅是中国古代宫殿建筑的杰出代表，也是中国古代政治、文化和艺术的重要象征。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑特点</h3>
+                        <p class="text-gray-600 mb-4">故宫的建筑设计严格遵循中国古代的等级制度和风水理念，采用了中轴线对称布局，建筑风格宏伟壮丽，装饰精美，体现了中国古代建筑的高超技艺和独特魅力。</p>
+                        <a href="forbiddenCity.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent transition-colors text-sm font-bold" style="font-family:'SimSun','STSong',serif;">
+                            <i class="fa fa-external-link mr-2"></i>查看详细介绍
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 天坛模态框 -->
+    <div id="templeOfHeavenModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">天坛</h2>
+                    <button onclick="closeModal('templeOfHeavenModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="天坛.jpg" alt="天坛" class="w-full h-64 object-cover rounded shadow">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>建造时间：1420年</li>
+                            <li>面积：约273万平方米</li>
+                            <li>主要建筑：祈年殿、圜丘坛、皇穹宇</li>
+                            <li>建筑风格：中国古典祭祀建筑</li>
+                            <li>世界文化遗产：1998年列入</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史意义</h3>
+                        <p class="text-gray-600 mb-4">天坛是明清两代皇帝祭天的场所，是中国古代祭祀建筑的杰出代表。它不仅是中国古代宗教信仰的重要场所，也是中国古代建筑艺术的瑰宝。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑特点</h3>
+                        <p class="text-gray-600 mb-4">天坛的建筑设计体现了中国古代的天人合一思想，采用了圆形和方形的布局，象征天圆地方。天坛的声学设计非常巧妙，如圜丘坛的回音壁和三音石，展示了中国古代建筑的高超技艺。</p>
+                        <a href="templeOfHeaven.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent transition-colors text-sm font-bold" style="font-family:'SimSun','STSong',serif;">
+                            <i class="fa fa-external-link mr-2"></i>查看详细介绍
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 苏州园林模态框 -->
+    <div id="suzhouGardenModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">苏州园林</h2>
+                    <button onclick="closeModal('suzhouGardenModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="苏州园林.jpg" alt="苏州园林" class="w-full h-64 object-cover rounded shadow">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>建造时间：始于春秋时期，盛于明清</li>
+                            <li>代表园林：拙政园、留园、网师园等</li>
+                            <li>建筑风格：中国古典园林建筑</li>
+                            <li>世界文化遗产：1997年列入</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史意义</h3>
+                        <p class="text-gray-600 mb-4">苏州园林是中国古典园林的杰出代表，以其精巧的设计和自然和谐的布局著称。它不仅是中国古代造园艺术的瑰宝，也是中国传统文化的重要组成部分。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑特点</h3>
+                        <p class="text-gray-600 mb-4">苏州园林的设计注重意境和自然和谐，采用了借景、对景、框景等手法，将自然景观与人工建筑巧妙融合，创造出"虽由人作，宛自天开"的艺术效果。</p>
+                        <a href="suzhouGarden.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent transition-colors text-sm font-bold" style="font-family:'SimSun','STSong',serif;">
+                            <i class="fa fa-external-link mr-2"></i>查看详细介绍
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 赵州桥模态框 -->
+    <div id="zhaozhouBridgeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">赵州桥</h2>
+                    <button onclick="closeModal('zhaozhouBridgeModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="赵州桥.jpg" alt="赵州桥" class="w-full h-64 object-cover rounded shadow">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>建造时间：隋朝大业年间（605-618年）</li>
+                            <li>长度：50.82米</li>
+                            <li>宽度：9.6米</li>
+                            <li>建筑类型：石拱桥</li>
+                            <li>设计者：李春</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史意义</h3>
+                        <p class="text-gray-600 mb-4">赵州桥是世界上现存最古老的石拱桥，展现了中国古代桥梁建筑的高超技艺。它不仅是中国古代桥梁建筑的杰出代表，也是世界桥梁史上的重要里程碑。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑特点</h3>
+                        <p class="text-gray-600 mb-4">赵州桥采用了敞肩拱结构，大大减轻了桥身重量，提高了桥梁的稳定性和承载能力。这种设计在当时是世界领先的，对后世桥梁建筑产生了深远影响。</p>
+                        <a href="zhaozhouBridge.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent transition-colors text-sm font-bold" style="font-family:'SimSun','STSong',serif;">
+                            <i class="fa fa-external-link mr-2"></i>查看详细介绍
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 应县木塔模态框 -->
+    <div id="yingxianPagodaModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">应县木塔</h2>
+                    <button onclick="closeModal('yingxianPagodaModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="应县木塔.jpg" alt="应县木塔" class="w-full h-64 object-cover rounded shadow">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>建造时间：辽清宁二年（1056年）</li>
+                            <li>高度：67.31米</li>
+                            <li>层数：五层六檐</li>
+                            <li>建筑类型：木结构佛塔</li>
+                            <li>世界文化遗产：2016年列入</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史意义</h3>
+                        <p class="text-gray-600 mb-4">应县木塔是世界上现存最高的木结构古建筑，展示了中国古代木构建筑的卓越成就。它不仅是中国古代建筑技术的杰出代表，也是中国古代佛教文化的重要载体。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑特点</h3>
+                        <p class="text-gray-600 mb-4">应县木塔采用了全木结构，不用一钉一铆，完全依靠斗拱和榫卯结构连接，展现了中国古代木构建筑的高超技艺。木塔历经多次地震和战火，仍然屹立不倒，充分体现了中国古代建筑的抗震性能。</p>
+                        <a href="yingxianPagoda.html" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-lg hover:bg-accent transition-colors text-sm font-bold" style="font-family:'SimSun','STSong',serif;">
+                            <i class="fa fa-external-link mr-2"></i>查看详细介绍
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 宇文恺模态框 -->
+    <div id="yuwenkaiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">宇文恺</h2>
+                    <button onclick="closeModal('yuwenkaiModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ancient%20chinese%20architect%20scholar%20yuwenkai%20traditional%20portrait&image_size=portrait_4_3" alt="宇文恺" class="w-full h-64 object-cover rounded">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>朝代：隋朝</li>
+                            <li>出生日期：555年</li>
+                            <li>逝世日期：612年</li>
+                            <li>职业：建筑家、城市规划师</li>
+                            <li>主要成就：设计大兴城、洛阳城</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史贡献</h3>
+                        <p class="text-gray-600 mb-4">宇文恺是隋朝著名的建筑家，设计了大兴城（今西安）和洛阳城，制定了严格的城市规划制度，对中国古代城市建设产生了深远影响。他的城市规划思想和建筑技术为后世所继承和发展。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑理念</h3>
+                        <p class="text-gray-600">宇文恺注重城市规划的合理性和科学性，强调城市功能的分区和交通的便利。他设计的大兴城布局严谨，街道整齐，是中国古代城市规划的典范。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 李春模态框 -->
+    <div id="lichunModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">李春</h2>
+                    <button onclick="closeModal('lichunModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ancient%20chinese%20bridge%20expert%20lichun%20traditional%20portrait&image_size=portrait_4_3" alt="李春" class="w-full h-64 object-cover rounded">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>朝代：隋朝</li>
+                            <li>职业：桥梁专家</li>
+                            <li>主要成就：设计建造赵州桥</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史贡献</h3>
+                        <p class="text-gray-600 mb-4">李春是隋朝著名的桥梁专家，设计建造了赵州桥，这是世界上现存最古老的石拱桥，展现了中国古代桥梁建筑的高超技艺。赵州桥的设计思想和建造技术对后世桥梁建筑产生了深远影响。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑理念</h3>
+                        <p class="text-gray-600">李春注重桥梁的结构合理性和实用性，采用了敞肩拱结构，大大减轻了桥身重量，提高了桥梁的稳定性和承载能力。这种设计在当时是世界领先的，体现了中国古代工匠的智慧和创造力。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 李诫模态框 -->
+    <div id="lijieModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">李诫</h2>
+                    <button onclick="closeModal('lijieModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ancient%20chinese%20architect%20lijie%20traditional%20portrait&image_size=portrait_4_3" alt="李诫" class="w-full h-64 object-cover rounded">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>朝代：北宋</li>
+                            <li>出生日期：1035年</li>
+                            <li>逝世日期：1110年</li>
+                            <li>职业：建筑家、著作家</li>
+                            <li>主要成就：编著《营造法式》</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史贡献</h3>
+                        <p class="text-gray-600 mb-4">李诫是北宋著名的建筑家，编著了《营造法式》，这是中国古代最完整的建筑技术专著，对后世建筑产生了深远影响。《营造法式》系统总结了中国古代建筑的技术和经验，是中国古代建筑史上的重要文献。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑理念</h3>
+                        <p class="text-gray-600">李诫注重建筑的标准化和规范化，强调建筑设计的科学性和实用性。他在《营造法式》中详细记录了建筑设计、施工工艺和材料规格，为中国古代建筑的发展提供了重要的技术指导。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 蒯祥模态框 -->
+    <div id="kuaixiangModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">蒯祥</h2>
+                    <button onclick="closeModal('kuaixiangModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ancient%20chinese%20architect%20kuaixiang%20traditional%20portrait&image_size=portrait_4_3" alt="蒯祥" class="w-full h-64 object-cover rounded">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>朝代：明代</li>
+                            <li>出生日期：1398年</li>
+                            <li>逝世日期：1481年</li>
+                            <li>职业：建筑家</li>
+                            <li>主要成就：参与设计建造北京故宫</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史贡献</h3>
+                        <p class="text-gray-600 mb-4">蒯祥是明代著名的建筑家，参与设计建造了北京故宫，是明代宫殿建筑的杰出代表，被誉为"蒯鲁班"。他的建筑技艺精湛，对明代宫殿建筑的发展做出了重要贡献。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">建筑理念</h3>
+                        <p class="text-gray-600">蒯祥注重建筑的艺术性和实用性，强调建筑与环境的和谐统一。他设计的宫殿建筑宏伟壮丽，装饰精美，体现了中国古代宫殿建筑的高超技艺和独特魅力。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 《营造法式》模态框 -->
+    <div id="yingzaofashiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">《营造法式》</h2>
+                    <button onclick="closeModal('yingzaofashiModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ancient%20chinese%20architecture%20book%20yingzaofashi&image_size=portrait_4_3" alt="《营造法式》" class="w-full h-64 object-cover rounded">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>作者：李诫</li>
+                            <li>成书时间：北宋元符三年（1100年）</li>
+                            <li>卷数：34卷</li>
+                            <li>内容：建筑设计、施工工艺、材料规格</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史意义</h3>
+                        <p class="text-gray-600 mb-4">《营造法式》是中国古代最完整的建筑技术专著，详细记录了建筑设计、施工工艺和材料规格，对后世建筑产生了深远影响。它不仅是中国古代建筑技术的重要文献，也是世界建筑史上的宝贵遗产。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">主要内容</h3>
+                        <p class="text-gray-600">《营造法式》分为总释、各作制度、功限、料例和图样五大部分，系统总结了中国古代建筑的技术和经验，为中国古代建筑的发展提供了重要的技术指导。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 《考工记》模态框 -->
+    <div id="kaogongjiModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">《考工记》</h2>
+                    <button onclick="closeModal('kaogongjiModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ancient%20chinese%20architecture%20book%20kaogongji&image_size=portrait_4_3" alt="《考工记》" class="w-full h-64 object-cover rounded">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>成书时间：春秋战国时期</li>
+                            <li>内容：手工业技术、城市规划、建筑设计</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史意义</h3>
+                        <p class="text-gray-600 mb-4">《考工记》是中国最早的手工业技术专著，包含了城市规划、建筑设计等方面的内容，对中国古代建筑的发展产生了深远影响。它不仅是中国古代科技史上的重要文献，也是研究中国古代建筑的重要资料。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">主要内容</h3>
+                        <p class="text-gray-600">《考工记》记载了各种手工业的制作工艺和技术规范，其中包含了城市规划、宫殿建筑、道路桥梁等方面的内容，为中国古代建筑的发展提供了重要的理论基础。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 《园冶》模态框 -->
+    <div id="yuanyeModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden modal">
+        <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-primary">《园冶》</h2>
+                    <button onclick="closeModal('yuanyeModal')" class="button">
+                        <div>
+                            <div>
+                                <div><i class="fa fa-times"></i></div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ancient%20chinese%20architecture%20book%20yuanye&image_size=portrait_4_3" alt="《园冶》" class="w-full h-64 object-cover rounded">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary mb-2">基本信息</h3>
+                        <ul class="list-disc list-inside text-gray-600 mb-4">
+                            <li>作者：计成</li>
+                            <li>成书时间：明代崇祯七年（1634年）</li>
+                            <li>内容：造园艺术、园林设计</li>
+                        </ul>
+                        <h3 class="text-xl font-bold text-primary mb-2">历史意义</h3>
+                        <p class="text-gray-600 mb-4">《园冶》是中国古代造园艺术的专著，系统阐述了园林设计的理论和方法，对中国古代园林的发展产生了深远影响。它不仅是中国古代造园艺术的重要文献，也是世界造园史上的宝贵遗产。</p>
+                        <h3 class="text-xl font-bold text-primary mb-2">主要内容</h3>
+                        <p class="text-gray-600">《园冶》分为相地、立基、屋宇、装折、门窗、墙垣、铺地、掇山、选石、借景十部分，系统总结了中国古代造园的理论和方法，为中国古代园林的发展提供了重要的指导。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新闻模态框 -->
+
+
+    <!-- 页脚 -->
+    <footer class="bg-primary text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa fa-pagelines text-2xl"></i>
+                        <h3 class="text-xl font-bold">中国古代建筑成就</h3>
+                    </div>
+                    <p class="mt-2 text-secondary">弘扬中华优秀自然科学成就</p>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#achievements" class="hover:text-secondary transition-colors">
+                        <i class="fa fa-building text-xl"></i>
+                    </a>
+                    <a href="#scientists" class="hover:text-secondary transition-colors">
+                        <i class="fa fa-user text-xl"></i>
+                    </a>
+                    <a href="#works" class="hover:text-secondary transition-colors">
+                        <i class="fa fa-book text-xl"></i>
+                    </a>
+                    <a href="#culture" class="hover:text-secondary transition-colors">
+                        <i class="fa fa-pagelines text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-4 border-t border-secondary text-center text-sm">
+                <p>© 2026 中国古代建筑成就 | 弘扬中华优秀传统文化</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单切换
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 模态框功能
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    // 关闭移动端菜单
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                }
+            });
+        });
+
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100', 'translate-y-0');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有卡片
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700');
+            observer.observe(card);
+        });
+
+        // 模态框功能
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 点击模态框外部关闭
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // 新闻模态框功能
+        function openNewsModal(newsId) {
+            const modal = document.getElementById(`${newsId}Modal`);
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeNewsModal(newsId) {
+            const modal = document.getElementById(`${newsId}Modal`);
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // 点赞功能
+        function toggleLike(newsId) {
+            const likeButton = document.querySelector(`[onclick="toggleLike('${newsId}')"]`);
+            const likeCount = document.getElementById(`${newsId}-likes`);
+            if (likeButton && likeCount) {
+                const icon = likeButton.querySelector('i');
+                if (icon.classList.contains('fa-heart-o')) {
+                    // 点赞
+                    icon.classList.remove('fa-heart-o');
+                    icon.classList.add('fa-heart');
+                    likeButton.classList.remove('text-gray-500');
+                    likeButton.classList.add('text-red-500');
+                    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                } else {
+                    // 取消点赞
+                    icon.classList.remove('fa-heart');
+                    icon.classList.add('fa-heart-o');
+                    likeButton.classList.remove('text-red-500');
+                    likeButton.classList.add('text-gray-500');
+                    likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                }
+            }
+        }
+
+        // 评论区切换功能
+        function toggleComment(newsId) {
+            const commentsSection = document.getElementById(`${newsId}-comments-section`);
+            if (commentsSection) {
+                commentsSection.classList.toggle('hidden');
+            }
+        }
+
+        // 数据
+        const provinceData = {
+            '北京': {
+                buildings: ['故宫', '天坛'],
+                craftsmen: ['蒯祥']
+            },
+            '河北': {
+                buildings: ['赵州桥'],
+                craftsmen: ['李春']
+            },
+            '河南': {
+                buildings: ['少林寺'],
+                craftsmen: []
+            },
+            '陕西': {
+                buildings: ['大雁塔', '兵马俑'],
+                craftsmen: []
+            },
+            '江苏': {
+                buildings: ['苏州园林', '明孝陵'],
+                craftsmen: []
+            },
+            '安徽': {
+                buildings: ['徽州民居', '宏村'],
+                craftsmen: []
+            },
+            '福建': {
+                buildings: ['土楼'],
+                craftsmen: []
+            },
+            '四川': {
+                buildings: ['乐山大佛', '都江堰'],
+                craftsmen: []
+            },
+            '云南': {
+                buildings: ['丽江古城', '崇圣寺三塔'],
+                craftsmen: []
+            },
+            '浙江': {
+                buildings: ['杭州西湖', '灵隐寺'],
+                craftsmen: []
+            },
+            '山东': {
+                buildings: ['孔庙'],
+                craftsmen: []
+            },
+            '湖北': {
+                buildings: ['武当山建筑群'],
+                craftsmen: []
+            },
+            '湖南': {
+                buildings: ['岳阳楼'],
+                craftsmen: []
+            },
+            '重庆': {
+                buildings: ['大足石刻'],
+                craftsmen: []
+            },
+            '贵州': {
+                buildings: ['镇远古城'],
+                craftsmen: []
+            },
+            '广西': {
+                buildings: ['靖江王城'],
+                craftsmen: []
+            },
+            '广东': {
+                buildings: ['陈家祠', '光孝寺'],
+                craftsmen: []
+            },
+            '海南': {
+                buildings: ['东坡书院'],
+                craftsmen: []
+            },
+            '辽宁': {
+                buildings: ['沈阳故宫'],
+                craftsmen: []
+            },
+            '吉林': {
+                buildings: ['高句丽王城'],
+                craftsmen: []
+            },
+            '黑龙江': {
+                buildings: ['瑷珲古城'],
+                craftsmen: []
+            },
+            '内蒙古': {
+                buildings: ['昭君墓'],
+                craftsmen: []
+            },
+            '新疆': {
+                buildings: ['克孜尔千佛洞'],
+                craftsmen: []
+            },
+            '西藏': {
+                buildings: ['布达拉宫', '大昭寺'],
+                craftsmen: []
+            },
+            '青海': {
+                buildings: ['塔尔寺'],
+                craftsmen: []
+            },
+            '甘肃': {
+                buildings: ['莫高窟'],
+                craftsmen: []
+            },
+            '宁夏': {
+                buildings: ['西夏王陵'],
+                craftsmen: []
+            },
+            '山西': {
+                buildings: ['应县木塔', '晋祠'],
+                craftsmen: []
+            },
+            '天津': {
+                buildings: ['独乐寺'],
+                craftsmen: []
+            },
+            '上海': {
+                buildings: ['豫园'],
+                craftsmen: []
+            },
+            '江西': {
+                buildings: ['滕王阁'],
+                craftsmen: []
+            },
+            '台湾': {
+                buildings: ['台北孔庙'],
+                craftsmen: []
+            }
+        };
+
+        // 时间轴数据
+        const timelineData = {
+            0: { // 原始社会
+                architectureType: [5, 5, 0, 80, 5, 5],
+                materialUsage: [10, 0, 80, 0, 0, 10]
+            },
+            1: { // 奴隶社会
+                architectureType: [10, 15, 0, 60, 10, 5],
+                materialUsage: [20, 10, 60, 5, 0, 5]
+            },
+            2: { // 封建社会早期
+                architectureType: [15, 20, 5, 40, 15, 5],
+                materialUsage: [30, 20, 30, 10, 5, 5]
+            },
+            3: { // 封建社会中期
+                architectureType: [15, 25, 10, 30, 10, 10],
+                materialUsage: [35, 25, 15, 15, 5, 5]
+            },
+            4: { // 封建社会晚期
+                architectureType: [15, 25, 10, 30, 10, 10],
+                materialUsage: [40, 30, 15, 10, 3, 2]
+            }
+        };
+
+        // 数字动画函数
+        function animateCounters() {
+            const counters = document.querySelectorAll('.animate-counter');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000; // 动画持续时间（毫秒）
+                const stepTime = 20; // 每步时间（毫秒）
+                const totalSteps = duration / stepTime;
+                let current = 0;
+                const step = target / totalSteps;
+
+                const updateCounter = () => {
+                    current += step;
+                    if (current < target) {
+                        counter.textContent = Math.floor(current) + '+';
+                        setTimeout(updateCounter, stepTime);
+                    } else {
+                        counter.textContent = target + '+';
+                    }
+                };
+
+                updateCounter();
+            });
+        }
+
+        // 数据可视化图表
+        document.addEventListener('DOMContentLoaded', function() {
+            // 启动数字动画
+            animateCounters();
+            
+            // 滚动渐现效果
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2,
+                rootMargin: '0px'
+            });
+            
+            document.querySelectorAll('.fade-onscroll, .fade-onscroll-left').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // 名人名言滑动展示
+            const quotesContainer = document.getElementById('quotesContainer');
+            const prevQuoteBtn = document.getElementById('prevQuote');
+            const nextQuoteBtn = document.getElementById('nextQuote');
+            const quoteIndicators = document.getElementById('quoteIndicators').querySelectorAll('button');
+            
+            let currentIndex = 0;
+            const itemWidth = 100; // 每个名言项的宽度百分比
+            const itemCount = document.querySelectorAll('.quote-item').length;
+            let visibleItems = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+            let maxIndex = itemCount - visibleItems;
+            
+            function updateQuotes() {
+                const translateValue = -currentIndex * (itemWidth / visibleItems);
+                quotesContainer.style.transform = `translateX(${translateValue}%)`;
+                
+                // 更新指示器
+                quoteIndicators.forEach((indicator, index) => {
+                    if (index === currentIndex) {
+                        indicator.classList.remove('bg-opacity-50');
+                        indicator.classList.add('bg-opacity-100');
+                    } else {
+                        indicator.classList.remove('bg-opacity-100');
+                        indicator.classList.add('bg-opacity-50');
+                    }
+                });
+            }
+            
+            // 下一个名言
+            nextQuoteBtn.addEventListener('click', function() {
+                currentIndex = Math.min(currentIndex + 1, maxIndex);
+                updateQuotes();
+            });
+            
+            // 上一个名言
+            prevQuoteBtn.addEventListener('click', function() {
+                currentIndex = Math.max(currentIndex - 1, 0);
+                updateQuotes();
+            });
+            
+            // 指示器点击
+            quoteIndicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', function() {
+                    currentIndex = Math.min(index, maxIndex);
+                    updateQuotes();
+                });
+            });
+            
+            // 窗口大小变化时重新计算
+            window.addEventListener('resize', function() {
+                const newVisibleItems = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+                if (newVisibleItems !== visibleItems) {
+                    visibleItems = newVisibleItems;
+                    maxIndex = itemCount - visibleItems;
+                    currentIndex = Math.min(currentIndex, maxIndex);
+                    updateQuotes();
+                }
+            });
+            // 建筑类型分布图表
+            const typeCtx = document.getElementById('architectureTypeChart');
+            let typeChart;
+            if (typeCtx) {
+                typeChart = new Chart(typeCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['宫殿建筑', '宗教建筑', '园林建筑', '民居建筑', '桥梁建筑', '其他'],
+                        datasets: [{
+                            data: [15, 25, 10, 30, 10, 10],
+                            backgroundColor: [
+                                '#3b82f6',
+                                '#10b981',
+                                '#f59e0b',
+                                '#ef4444',
+                                '#8b5cf6',
+                                '#6b7280'
+                            ],
+                            borderWidth: 1,
+                            borderColor: '#1e293b',
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true,
+                            duration: 2000,
+                            easing: 'easeOutQuart'
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: '#ffffff',
+                                    font: {
+                                        size: 12
+                                    },
+                                    padding: 20
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                titleColor: '#ffffff',
+                                bodyColor: '#e2e8f0',
+                                borderColor: '#3b82f6',
+                                borderWidth: 1,
+                                padding: 12,
+                                cornerRadius: 8,
+                                displayColors: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 建筑发展时间线图表
+            const timelineCtx = document.getElementById('architectureTimelineChart');
+            let timelineChart;
+            if (timelineCtx) {
+                timelineChart = new Chart(timelineCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['原始社会', '奴隶社会', '封建社会早期', '封建社会中期', '封建社会晚期'],
+                        datasets: [{
+                            label: '建筑技术发展',
+                            data: [10, 25, 45, 70, 90],
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#3b82f6',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeOutQuart'
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#ffffff'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                titleColor: '#ffffff',
+                                bodyColor: '#e2e8f0',
+                                borderColor: '#3b82f6',
+                                borderWidth: 1,
+                                padding: 12,
+                                cornerRadius: 8
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 建筑材料使用图表
+            const materialCtx = document.getElementById('materialUsageChart');
+            let materialChart;
+            if (materialCtx) {
+                materialChart = new Chart(materialCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['木材', '砖石', '夯土', '瓦片', '石灰', '其他'],
+                        datasets: [{
+                            label: '使用频率',
+                            data: [40, 30, 15, 10, 3, 2],
+                            backgroundColor: [
+                                '#3b82f6',
+                                '#10b981',
+                                '#f59e0b',
+                                '#ef4444',
+                                '#8b5cf6',
+                                '#6b7280'
+                            ],
+                            borderWidth: 1,
+                            borderColor: '#1e293b',
+                            borderRadius: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeOutQuart'
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                },
+                                ticks: {
+                                    color: '#ffffff'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: '#ffffff'
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                titleColor: '#ffffff',
+                                bodyColor: '#e2e8f0',
+                                borderColor: '#3b82f6',
+                                borderWidth: 1,
+                                padding: 12,
+                                cornerRadius: 8
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 初始化ECharts地图
+            const chinaMapContainer = document.getElementById('chinaMap');
+            const provinceInfo = document.getElementById('provinceInfo');
+            const provinceNameEl = document.getElementById('provinceName');
+            const provinceBuildingsEl = document.getElementById('provinceBuildings');
+            
+            if (chinaMapContainer) {
+                const myChart = echarts.init(chinaMapContainer);
+                
+                // 地图数据
+                const mapData = [
+                    { name: '北京', value: 100, buildings: '故宫,天坛' },
+                    { name: '河北', value: 80, buildings: '赵州桥' },
+                    { name: '河南', value: 90, buildings: '少林寺' },
+                    { name: '陕西', value: 120, buildings: '大雁塔,兵马俑' },
+                    { name: '江苏', value: 85, buildings: '苏州园林,明孝陵' },
+                    { name: '安徽', value: 70, buildings: '徽州民居,宏村' },
+                    { name: '福建', value: 75, buildings: '土楼' },
+                    { name: '四川', value: 110, buildings: '乐山大佛,都江堰' },
+                    { name: '云南', value: 85, buildings: '丽江古城,崇圣寺三塔' },
+                    { name: '浙江', value: 95, buildings: '杭州西湖,灵隐寺' },
+                    { name: '山东', value: 80, buildings: '孔庙' },
+                    { name: '湖北', value: 75, buildings: '武当山建筑群' },
+                    { name: '湖南', value: 70, buildings: '岳阳楼' },
+                    { name: '重庆', value: 80, buildings: '大足石刻' },
+                    { name: '贵州', value: 60, buildings: '镇远古城' },
+                    { name: '广西', value: 65, buildings: '靖江王城' },
+                    { name: '广东', value: 90, buildings: '陈家祠,光孝寺' },
+                    { name: '海南', value: 50, buildings: '东坡书院' },
+                    { name: '辽宁', value: 70, buildings: '沈阳故宫' },
+                    { name: '吉林', value: 55, buildings: '高句丽王城' },
+                    { name: '黑龙江', value: 50, buildings: '瑷珲古城' },
+                    { name: '内蒙古', value: 60, buildings: '昭君墓' },
+                    { name: '新疆', value: 65, buildings: '克孜尔千佛洞' },
+                    { name: '西藏', value: 70, buildings: '布达拉宫,大昭寺' },
+                    { name: '青海', value: 55, buildings: '塔尔寺' },
+                    { name: '甘肃', value: 85, buildings: '莫高窟' },
+                    { name: '宁夏', value: 50, buildings: '西夏王陵' },
+                    { name: '山西', value: 95, buildings: '应县木塔,晋祠' },
+                    { name: '天津', value: 60, buildings: '独乐寺' },
+                    { name: '上海', value: 75, buildings: '豫园' },
+                    { name: '江西', value: 65, buildings: '滕王阁' },
+                    { name: '台湾', value: 60, buildings: '台北孔庙' }
+                ];
+                
+                // 配置选项
+                const option = {
+                    backgroundColor: 'rgba(0, 0, 0, 0)',
+                    title: {
+                        text: '',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: function(params) {
+                            return params.name + '<br/>特色建筑: ' + (params.data.buildings || '无');
+                        }
+                    },
+                    visualMap: {
+                        type: 'continuous',
+                        min: 0,
+                        max: 120,
+                        left: 'left',
+                        top: 'bottom',
+                        text: ['高', '低'],
+                        inRange: {
+                            color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
+                        },
+                        textStyle: {
+                            color: '#ffffff'
+                        }
+                    },
+                    series: [
+                        {
+                            name: '中国古代建筑',
+                            type: 'map',
+                            map: 'china',
+                            roam: true,
+                            zoom: 1.2,
+                            center: [104, 38],
+                            label: {
+                                show: true,
+                                fontSize: 10,
+                                color: '#ffffff'
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: 12,
+                                    color: '#ffffff'
+                                },
+                                itemStyle: {
+                                    areaColor: '#3b82f6'
+                                }
+                            },
+                            data: mapData
+                        }
+                    ]
+                };
+                
+                // 设置配置项
+                myChart.setOption(option);
+                
+                // 监听地图点击事件
+                myChart.on('click', function(params) {
+                    const provinceName = params.name;
+                    const buildings = params.data.buildings || '无';
+                    showProvinceData(provinceName, buildings);
+                });
+                
+                // 响应式调整
+                window.addEventListener('resize', function() {
+                    myChart.resize();
+                });
+            }
+
+            // 时间轴拖动事件
+            const timelineSlider = document.getElementById('timelineSlider');
+            if (timelineSlider) {
+                timelineSlider.addEventListener('input', function() {
+                    const period = parseInt(this.value);
+                    updateChartsByTime(period);
+                });
+            }
+
+            // 显示省份数据
+            function showProvinceData(provinceName, buildings) {
+                // 显示省份信息
+                provinceNameEl.textContent = provinceName;
+                provinceBuildingsEl.textContent = buildings;
+                provinceInfo.classList.remove('hidden');
+                
+                // 显示相关匠师信息
+                const data = provinceData[provinceName] || { buildings: [], craftsmen: [] };
+                if (data.craftsmen && data.craftsmen.length > 0) {
+                    // 如果有相关匠师，添加到显示中
+                    if (!provinceInfo.querySelector('#provinceCraftsmen')) {
+                        const craftsmenEl = document.createElement('p');
+                        craftsmenEl.id = 'provinceCraftsmen';
+                        craftsmenEl.className = 'text-gray-300 mt-2';
+                        provinceInfo.appendChild(craftsmenEl);
+                    }
+                    document.getElementById('provinceCraftsmen').innerHTML = `<span class="text-blue-300">相关匠师：</span>${data.craftsmen.join('、')}`;
+                } else {
+                    // 如果没有相关匠师，移除该元素
+                    const craftsmenEl = document.getElementById('provinceCraftsmen');
+                    if (craftsmenEl) {
+                        craftsmenEl.remove();
+                    }
+                }
+                
+                // 添加动画效果
+                provinceInfo.classList.add('fade-in');
+                setTimeout(() => {
+                    provinceInfo.classList.remove('fade-in');
+                }, 500);
+            }
+
+            // 根据时间更新图表
+            function updateChartsByTime(period) {
+                const data = timelineData[period];
+                if (data) {
+                    if (typeChart) {
+                        typeChart.data.datasets[0].data = data.architectureType;
+                        typeChart.update();
+                    }
+                    if (materialChart) {
+                        materialChart.data.datasets[0].data = data.materialUsage;
+                        materialChart.update();
+                    }
+                }
+            }
+        });
+
+
+    </script>
+    <script src="transition.js"></script>
+</body>
+</html>
